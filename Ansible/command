@@ -1,0 +1,1 @@
+ansible-playbook -i ~/playbook/inventory ~/playbook/playbook.yml

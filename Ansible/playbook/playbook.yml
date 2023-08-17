@@ -1,0 +1,40 @@
+---
+- name: Create a blank file on app servers
+  hosts: stapp01 stapp02 stapp03
+  become: yes
+  tasks:
+    - name: Create blank file
+      file:
+        path: /usr/src/nfsdata.txt
+        state: touch
+        mode: "0755"
+      delegate_to: "{{ inventory_hostname }}"
+      when: inventory_hostname == 'stapp01'
+
+    - name: Create blank file
+      file:
+        path: /usr/src/nfsdata.txt
+        state: touch
+        mode: "0755"
+      delegate_to: "{{ inventory_hostname }}"
+      when: inventory_hostname == 'stapp02'
+
+    - name: Create blank file
+      file:
+        path: /usr/src/nfsdata.txt
+        state: touch
+        mode: "0755"
+      delegate_to: "{{ inventory_hostname }}"
+      when: inventory_hostname == 'stapp03'
+
+    - name: Set owner and group
+      file:
+        path: /usr/src/nfsdata.txt
+        owner: "{{ owner_map[inventory_hostname] }}"
+        group: "{{ owner_map[inventory_hostname] }}"
+      delegate_to: "{{ inventory_hostname }}"
+      vars:
+        owner_map:
+          appserver1: tony
+          appserver2: steve
+          appserver3: banner
